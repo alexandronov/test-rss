@@ -1,5 +1,7 @@
 version: '3.7'
+
 services:
+
   php-fpm:
     image: thecodingmachine/php:7.4-v3-fpm-node8
     restart: on-failure
@@ -13,6 +15,7 @@ services:
       DATABASE_URL: "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@postgres:5432/$POSTGRES_DB"
       PHP_EXTENSION_PGSQL: 1
       PHP_EXTENSION_PDO_PGSQL: 1
+
   web:
     image: nginx:latest
     ports:
@@ -26,6 +29,7 @@ services:
       - php-fpm
     depends_on:
       - php-fpm
+
   postgres:
     image: "postgres"
     ports:
@@ -41,6 +45,7 @@ services:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     networks:
       - common-network
+
 networks:
   common-network:
     driver: bridge

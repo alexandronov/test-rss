@@ -129,6 +129,9 @@
     "facebook/webdriver": {
         "version": "1.7.1"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.5.0"
     },

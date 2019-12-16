@@ -15,8 +15,8 @@ composer-install:
 db-migrate:
 	$(RUN_PHP) bin/console doctrine:migrations:migrate
 .PHONY: db-migrate
-ssh:
 
+ssh:
 	$(RUN_PHP) sh
 .PHONY: ssh
 
