@@ -34,12 +34,14 @@ class RegistrationCest
 
         $data = $example->getIterator()->getArrayCopy();
 
-        $I->submitForm('form', [
-            'registration_form' => [
-                'email' => $data[0],
-                'plainPassword' => 'foobarbaz',
-            ],
-        ]);
+        $I->registerWithEmailAndPassword($data[0], 'random_password');
+
+//        $I->submitForm('form', [
+//            'registration_form' => [
+//                'email' => $data[0],
+//                'plainPassword' => 'foobarbaz',
+//            ],
+//        ]);
 
         $I->seeResponseCodeIs(200);
         $I->see('Please enter a valid email');
@@ -63,12 +65,14 @@ class RegistrationCest
 
         $faker = Factory::create();
 
-        $I->submitForm('form', [
-            'registration_form' => [
-                'email' => $faker->email,
-                'plainPassword' => 'foobarbaz',
-            ],
-        ]);
+        $I->registerWithEmailAndPassword($faker->email, $faker->password);
+
+//        $I->submitForm('form', [
+//            'registration_form' => [
+//                'email' => $faker->email,
+//                'plainPassword' => 'foobarbaz',
+//            ],
+//        ]);
 
         $I->amOnPage('/feed');
         $I->seeResponseCodeIs(200);
@@ -86,24 +90,28 @@ class RegistrationCest
 
         $email = $faker->email;
 
-        $I->submitForm('form', [
-            'registration_form' => [
-                'email' => $email,
-                'plainPassword' => 'foobarbaz',
-            ],
-        ]);
+        $I->registerWithEmailAndPassword($email, $faker->password);
+
+//        $I->submitForm('form', [
+//            'registration_form' => [
+//                'email' => $email,
+//                'plainPassword' => 'foobarbaz',
+//            ],
+//        ]);
 
         $I->seeResponseCodeIs(200);
 
         $I->amOnPage('/register');
         $I->seeResponseCodeIs(200);
 
-        $I->submitForm('form', [
-            'registration_form' => [
-                'email' => $email,
-                'plainPassword' => 'foobarbaz',
-            ],
-        ]);
+        $I->registerWithEmailAndPassword($email, $faker->password);
+
+//        $I->submitForm('form', [
+//            'registration_form' => [
+//                'email' => $email,
+//                'plainPassword' => 'foobarbaz',
+//            ],
+//        ]);
 
         $I->see('There is already an account with this email');
     }
