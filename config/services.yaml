@@ -29,3 +29,10 @@ services:
     App\Service\WordFrequencyCounter: ~
     App\Service\WordFrequencyCounterInterface: '@App\Service\WordFrequencyCounter'
 
+    App\Service\RssReader\SimpleRssReader: ~
+    App\Service\RssReader\RssReaderInterface: '@App\Service\RssReader\SimpleRssReader'
+
+    App\Service\RssReader\XmlRssParser: ~
+    App\Service\RssReader\RssParserInterface: '@App\Service\RssReader\XmlRssParser'
+
+
