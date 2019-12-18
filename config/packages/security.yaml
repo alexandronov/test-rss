@@ -37,4 +37,5 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/validation/email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/feed, roles: IS_AUTHENTICATED_FULLY }
