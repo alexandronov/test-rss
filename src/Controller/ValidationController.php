@@ -20,6 +20,7 @@ class ValidationController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
+        $form->handleRequest($request);
         $form->submit($data);
 
         if (false === $form->isValid()) {

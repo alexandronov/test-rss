@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Service\RssReader\RssParserInterface;
 use App\Service\RssReader\RssReaderInterface;
-use App\Service\RssReader\XmlRssParser;
 use App\Service\WordFrequencyCounterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +22,9 @@ class FeedController extends AbstractController
 
         $wordCount = $wordFrequencyCounter->count($feed->toString(), 10);
 
-        return new Response('<h1>Welcome to Feed</h1>');
+        return $this->render('feed/feed.html.twig', [
+            'feed' => $feed,
+            'wordCount' => $wordCount,
+        ]);
     }
 }

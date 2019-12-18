@@ -5,7 +5,7 @@ namespace App\Tests\Acceptance;
 use App\Tests\AcceptanceTester;
 use Codeception\Example;
 use Codeception\Scenario;
-use Faker\Factory;
+use Faker\Factory as FakerFactory;
 
 class RegistrationCest
 {
@@ -36,13 +36,6 @@ class RegistrationCest
 
         $I->registerWithEmailAndPassword($data[0], 'random_password');
 
-//        $I->submitForm('form', [
-//            'registration_form' => [
-//                'email' => $data[0],
-//                'plainPassword' => 'foobarbaz',
-//            ],
-//        ]);
-
         $I->seeResponseCodeIs(200);
         $I->see('Please enter a valid email');
     }
@@ -56,23 +49,38 @@ class RegistrationCest
         ];
     }
 
-    public function testSuccessfulRegistration(AcceptanceTester $I): void
+    public function testSuccessfulRegistration(AcceptanceTester $I, Scenario $scenario): void
     {
+        $scenario->skip('Skipping because authorization right after registration is not implemented yet');
+
         $I->wantTo('See if I see feed after registration');
 
         $I->amOnPage('/register');
         $I->seeResponseCodeIs(200);
 
-        $faker = Factory::create();
+        $faker = FakerFactory::create();
 
         $I->registerWithEmailAndPassword($faker->email, $faker->password);
 
-//        $I->submitForm('form', [
-//            'registration_form' => [
-//                'email' => $faker->email,
-//                'plainPassword' => 'foobarbaz',
-//            ],
-//        ]);
+        $I->amOnPage('/feed');
+        $I->seeResponseCodeIs(200);
+        $I->see('Welcome to Feed');
+    }
+
+    public function testLoginAfterRegistration(AcceptanceTester $I): void
+    {
+        $I->wantTo('Login after registration');
+
+        $I->amOnPage('/register');
+        $I->seeResponseCodeIs(200);
+
+        $faker = FakerFactory::create();
+
+        $email = $faker->email;
+        $password = $faker->password;
+
+        $I->registerWithEmailAndPassword($email, $password);
+        $I->loginWithEmailAndPassword($email, $password);
 
         $I->amOnPage('/feed');
         $I->seeResponseCodeIs(200);
@@ -86,18 +94,11 @@ class RegistrationCest
         $I->amOnPage('/register');
         $I->seeResponseCodeIs(200);
 
-        $faker = Factory::create();
+        $faker = FakerFactory::create();
 
         $email = $faker->email;
 
         $I->registerWithEmailAndPassword($email, $faker->password);
-
-//        $I->submitForm('form', [
-//            'registration_form' => [
-//                'email' => $email,
-//                'plainPassword' => 'foobarbaz',
-//            ],
-//        ]);
 
         $I->seeResponseCodeIs(200);
 
@@ -105,13 +106,6 @@ class RegistrationCest
         $I->seeResponseCodeIs(200);
 
         $I->registerWithEmailAndPassword($email, $faker->password);
-
-//        $I->submitForm('form', [
-//            'registration_form' => [
-//                'email' => $email,
-//                'plainPassword' => 'foobarbaz',
-//            ],
-//        ]);
 
         $I->see('There is already an account with this email');
     }

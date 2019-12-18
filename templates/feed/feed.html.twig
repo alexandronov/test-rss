@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Feed{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-header">Welcome to Feed</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Common words</h4>
+                {%  for word, count in wordCount %}
+                <p><strong>{{ word }}</strong> - {{ count }} times</p>
+                {% endfor %}
+            </div>
+            <div class="col-md-9">
+                <h4>{{ feed.getTitle }}</h4>
+                <ul class="timeline">
+                    {% for entry in feed.getEntries %}
+                        <li>
+                            <h6>{{ entry.getTitle|striptags }} <small>by {{ entry.getAuthorName }}</small></h6>
+                            <p>{{ entry.getSummary|striptags }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

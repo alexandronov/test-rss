@@ -3,12 +3,61 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Register</h5>
+                        {{ form_start(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
+                        <div class="form-label-group">
+                            {{ form_row(registrationForm.email, {'attr': {'class': 'form-controll'}}) }}
+                            <div id="emailError" class="alert alert-danger" style="display: none;"></div>
+                        </div>
+                        <div class="form-label-group">{{ form_row(registrationForm.plainPassword) }}</div>
 
-        <button class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function enableEmailValidation() {
+            $('#registration_form_email').click(function () {
+                $('#emailError').hide();
+            });
+            $('#registration_form_email').blur(function () {
+                if ('' === email) {
+                    return;
+                }
+                var email = $(this).val();
+                $.ajax({
+                    contentType: 'application/json',
+                    url: "/validation/email",
+                    async: false,
+                    type: "POST",
+                    data: JSON.stringify({email: email}),
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (jqXHR, exception) {
+                        if (jqXHR.status === 400) {
+                            $('#emailError').text(jqXHR.responseJSON.error).show();
+                        }
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            enableEmailValidation();
+        });
+    </script>
 {% endblock %}

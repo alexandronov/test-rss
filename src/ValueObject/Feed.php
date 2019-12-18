@@ -22,12 +22,12 @@ class Feed
     /**
      * @return FeedEntry[]
      */
-    public function entries(): array
+    public function getEntries(): array
     {
         return $this->entries;
     }
 
-    public function title(): string
+    public function getTitle(): string
     {
         return $this->title;
     }

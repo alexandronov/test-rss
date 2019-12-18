@@ -14,10 +14,10 @@ class XmlRssParserTest extends \Codeception\Test\Unit
 
         $feed = $parser->parse($this->xmlString());
 
-        $this->assertEquals('Expected feed title', $feed->title());
-        $this->assertCount(2, $feed->entries());
+        $this->assertEquals('Expected feed title', $feed->getTitle());
+        $this->assertCount(2, $feed->getEntries());
 
-        $entries = $feed->entries();
+        $entries = $feed->getEntries();
         /** @var FeedEntry $firstEntry */
         $firstEntry = reset($entries);
 
