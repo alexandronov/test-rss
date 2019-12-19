@@ -7,6 +7,7 @@ use App\Form\EmailValidationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ValidationController extends AbstractController
@@ -26,9 +27,9 @@ class ValidationController extends AbstractController
         if (false === $form->isValid()) {
             return new JsonResponse([
                 'error' => $form->getErrors(true)->current()->getMessage(),
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(['success' => true], 200);
+        return new JsonResponse(['success' => true]);
     }
 }

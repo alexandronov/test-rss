@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Message\SendWelcomeEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
@@ -35,7 +35,13 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->authenticateUser($user);
+            /**
+             * This is just a quick solution. In real case would rather configure eventBus and commandBus and handle such things as emails async
+             *
+             * Right here would dispatch a NewUserRegisteredEvent and send a welcome email in one of it's handlers
+             */
+
+            $this->dispatchMessage(new SendWelcomeEmail($user->getId()));
 
             return $this->redirectToRoute('view_feed');
         }
@@ -43,12 +49,5 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
-    }
-
-    private function authenticateUser(User $user): void
-    {
-//        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-
-//        $this->container->get('security.context')->setToken($token);
     }
 }

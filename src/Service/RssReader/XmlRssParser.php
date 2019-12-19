@@ -19,7 +19,6 @@ class XmlRssParser implements RssParserInterface
             $feed->add($entry);
         }
 
-
         return $feed;
     }
 
